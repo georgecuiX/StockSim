@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -59,6 +60,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
+        <ScrollToTop />
         {user && <Navbar user={user} onLogout={handleLogout} />}
         
         <div className={user ? "pt-16" : ""}>

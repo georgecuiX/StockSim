@@ -18,6 +18,32 @@
 .env.test.local
 .env.production.local
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+
+# runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# temporary folders
+.tmp/
+temp/
+
+# editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# package manager lock files (optional - some prefer to commit these)
+# package-lock.json
+# yarn.lock
