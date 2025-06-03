@@ -1,1 +1,1 @@
-# StockAnalyzer
+# StockSim
