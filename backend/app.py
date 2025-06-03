@@ -167,6 +167,313 @@ def get_current_user():
 def index():
     return jsonify({"message": "Stock Market Analysis API", "status": "running"})
 
+# Import the Alpha Vantage client
+from utils.api_client import AlphaVantageClient
+
+# Initialize API client
+api_client = AlphaVantageClient()
+
+# Helper function to check authentication
+def require_auth():
+    user_id = session.get('user_id')
+    if not user_id:
+        return None
+    return User.query.get(user_id)
+
+# Stock API Routes
+@app.route('/api/stocks/search/<string:query>', methods=['GET'])
+def search_stocks(query):
+    try:
+        results = api_client.search_stocks(query)
+        return jsonify({
+            'results': results,
+            'count': len(results)
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stocks/<string:symbol>/quote', methods=['GET'])
+def get_stock_quote(symbol):
+    try:
+        quote = api_client.get_stock_quote(symbol.upper())
+        if not quote:
+            return jsonify({'error': 'Stock not found or API limit reached'}), 404
+        
+        # Store/update stock in database
+        stock = Stock.query.get(symbol.upper())
+        if stock:
+            stock.last_price = quote['price']
+            stock.last_updated = datetime.utcnow()
+        else:
+            # Get company info for new stocks
+            company_info = api_client.get_company_overview(symbol.upper())
+            stock = Stock(
+                symbol=symbol.upper(),
+                name=company_info.get('name', 'Unknown') if company_info else 'Unknown',
+                sector=company_info.get('sector') if company_info else None,
+                last_price=quote['price'],
+                last_updated=datetime.utcnow()
+            )
+            db.session.add(stock)
+        
+        db.session.commit()
+        
+        return jsonify({
+            'quote': quote,
+            'company': stock.to_dict()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stocks/<string:symbol>/chart', methods=['GET'])
+def get_stock_chart(symbol):
+    try:
+        # Get optional parameters
+        outputsize = request.args.get('outputsize', 'compact')  # compact or full
+        
+        chart_data = api_client.get_daily_data(symbol.upper(), outputsize)
+        if not chart_data:
+            return jsonify({'error': 'Chart data not found or API limit reached'}), 404
+        
+        return jsonify({
+            'symbol': symbol.upper(),
+            'data': chart_data,
+            'count': len(chart_data)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stocks/<string:symbol>/overview', methods=['GET'])
+def get_company_overview(symbol):
+    try:
+        overview = api_client.get_company_overview(symbol.upper())
+        if not overview:
+            return jsonify({'error': 'Company information not found or API limit reached'}), 404
+        
+        return jsonify({'overview': overview}), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Watchlist Routes
+@app.route('/api/watchlist', methods=['GET'])
+def get_watchlist():
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        watchlist_items = Watchlist.query.filter_by(user_id=user.id).all()
+        
+        # Get current prices for watchlist stocks
+        watchlist_with_prices = []
+        for item in watchlist_items:
+            stock = Stock.query.get(item.symbol)
+            stock_data = stock.to_dict() if stock else {'symbol': item.symbol, 'name': 'Unknown'}
+            
+            watchlist_with_prices.append({
+                'id': item.id,
+                'symbol': item.symbol,
+                'added_at': item.added_at.isoformat(),
+                'stock_data': stock_data
+            })
+        
+        return jsonify({
+            'watchlist': watchlist_with_prices,
+            'count': len(watchlist_with_prices)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/watchlist/add', methods=['POST'])
+def add_to_watchlist():
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol', '').upper().strip()
+        
+        if not symbol:
+            return jsonify({'error': 'Stock symbol required'}), 400
+        
+        # Check if already in watchlist
+        existing = Watchlist.query.filter_by(user_id=user.id, symbol=symbol).first()
+        if existing:
+            return jsonify({'error': 'Stock already in watchlist'}), 400
+        
+        # Add to watchlist
+        watchlist_item = Watchlist(user_id=user.id, symbol=symbol)
+        db.session.add(watchlist_item)
+        db.session.commit()
+        
+        return jsonify({
+            'message': f'{symbol} added to watchlist',
+            'item': watchlist_item.to_dict()
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/watchlist/<string:symbol>', methods=['DELETE'])
+def remove_from_watchlist(symbol):
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        watchlist_item = Watchlist.query.filter_by(
+            user_id=user.id, 
+            symbol=symbol.upper()
+        ).first()
+        
+        if not watchlist_item:
+            return jsonify({'error': 'Stock not found in watchlist'}), 404
+        
+        db.session.delete(watchlist_item)
+        db.session.commit()
+        
+        return jsonify({'message': f'{symbol.upper()} removed from watchlist'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Portfolio Routes
+@app.route('/api/portfolio', methods=['GET'])
+def get_portfolio():
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        transactions = Transaction.query.filter_by(user_id=user.id).order_by(Transaction.date.desc()).all()
+        
+        # Calculate portfolio holdings
+        holdings = {}
+        for transaction in transactions:
+            symbol = transaction.symbol
+            if symbol not in holdings:
+                holdings[symbol] = {'quantity': 0, 'total_cost': 0, 'transactions': []}
+            
+            if transaction.type == 'buy':
+                holdings[symbol]['quantity'] += transaction.quantity
+                holdings[symbol]['total_cost'] += transaction.quantity * transaction.price
+            else:  # sell
+                holdings[symbol]['quantity'] -= transaction.quantity
+                holdings[symbol]['total_cost'] -= transaction.quantity * transaction.price
+            
+            holdings[symbol]['transactions'].append(transaction.to_dict())
+        
+        # Remove holdings with zero quantity
+        active_holdings = {k: v for k, v in holdings.items() if v['quantity'] > 0}
+        
+        # Calculate average cost and current values
+        portfolio_summary = []
+        total_portfolio_value = 0
+        total_cost_basis = 0
+        
+        for symbol, holding in active_holdings.items():
+            avg_cost = holding['total_cost'] / holding['quantity'] if holding['quantity'] > 0 else 0
+            
+            # Get current stock price
+            stock = Stock.query.get(symbol)
+            current_price = stock.last_price if stock and stock.last_price else 0
+            current_value = holding['quantity'] * current_price
+            gain_loss = current_value - holding['total_cost']
+            gain_loss_percent = (gain_loss / holding['total_cost'] * 100) if holding['total_cost'] > 0 else 0
+            
+            portfolio_summary.append({
+                'symbol': symbol,
+                'quantity': holding['quantity'],
+                'avg_cost': round(avg_cost, 2),
+                'current_price': current_price,
+                'current_value': round(current_value, 2),
+                'total_cost': round(holding['total_cost'], 2),
+                'gain_loss': round(gain_loss, 2),
+                'gain_loss_percent': round(gain_loss_percent, 2),
+                'stock_info': stock.to_dict() if stock else None
+            })
+            
+            total_portfolio_value += current_value
+            total_cost_basis += holding['total_cost']
+        
+        total_gain_loss = total_portfolio_value - total_cost_basis
+        total_gain_loss_percent = (total_gain_loss / total_cost_basis * 100) if total_cost_basis > 0 else 0
+        
+        return jsonify({
+            'holdings': portfolio_summary,
+            'summary': {
+                'total_value': round(total_portfolio_value, 2),
+                'total_cost': round(total_cost_basis, 2),
+                'total_gain_loss': round(total_gain_loss, 2),
+                'total_gain_loss_percent': round(total_gain_loss_percent, 2),
+                'positions_count': len(portfolio_summary)
+            },
+            'recent_transactions': [t.to_dict() for t in transactions[:10]]  # Last 10 transactions
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/portfolio/transaction', methods=['POST'])
+def add_transaction():
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol', '').upper().strip()
+        transaction_type = data.get('type', '').lower()
+        quantity = data.get('quantity')
+        price = data.get('price')
+        date_str = data.get('date')  # ISO format string
+        
+        # Validation
+        if not all([symbol, transaction_type, quantity, price, date_str]):
+            return jsonify({'error': 'All fields required: symbol, type, quantity, price, date'}), 400
+        
+        if transaction_type not in ['buy', 'sell']:
+            return jsonify({'error': 'Transaction type must be "buy" or "sell"'}), 400
+        
+        if quantity <= 0 or price <= 0:
+            return jsonify({'error': 'Quantity and price must be positive numbers'}), 400
+        
+        # Parse date
+        try:
+            transaction_date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+        except ValueError:
+            return jsonify({'error': 'Invalid date format. Use ISO format (YYYY-MM-DDTHH:MM:SS)'}), 400
+        
+        # Create transaction
+        transaction = Transaction(
+            user_id=user.id,
+            symbol=symbol,
+            type=transaction_type,
+            quantity=int(quantity),
+            price=float(price),
+            date=transaction_date
+        )
+        
+        db.session.add(transaction)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Transaction added successfully',
+            'transaction': transaction.to_dict()
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 # Create database tables
 with app.app_context():
     db.create_all()

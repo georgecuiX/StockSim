@@ -1,0 +1,64 @@
+### Test basic API
+GET http://localhost:5000
+
+### Register a new user
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "password123"
+}
+
+### Login
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "password123"
+}
+
+### Get current user
+GET http://localhost:5000/api/me
+
+### Search for stocks
+GET http://localhost:5000/api/stocks/search/apple
+
+### Get stock quote
+GET http://localhost:5000/api/stocks/AAPL/quote
+
+### Get stock chart data
+GET http://localhost:5000/api/stocks/AAPL/chart
+
+### Get company overview
+GET http://localhost:5000/api/stocks/AAPL/overview
+
+### Add stock to watchlist (need to be logged in first)
+POST http://localhost:5000/api/watchlist/add
+Content-Type: application/json
+
+{
+    "symbol": "AAPL"
+}
+
+### Get watchlist
+GET http://localhost:5000/api/watchlist
+
+### Add a transaction (need to be logged in first)
+POST http://localhost:5000/api/portfolio/transaction
+Content-Type: application/json
+
+{
+    "symbol": "AAPL",
+    "type": "buy",
+    "quantity": 10,
+    "price": 150.00,
+    "date": "2024-01-15T10:30:00"
+}
+
+### Get portfolio
+GET http://localhost:5000/api/portfolio
+
+### Remove from watchlist
+DELETE http://localhost:5000/api/watchlist/AAPL
