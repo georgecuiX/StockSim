@@ -93,7 +93,6 @@ The application uses SQLite with the following core tables:
 - **Python 3.8+** - Backend runtime environment
 - **Node.js 16+** - Frontend development environment
 - **npm or yarn** - Package manager for frontend dependencies
-- **Alpha Vantage API Key** - Free API key from [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
 
 ### Installation Steps
 
@@ -173,11 +172,6 @@ npm start
 3. **Add to Watchlist** - Track interesting stocks for monitoring
 4. **Record Transactions** - Add buy/sell transactions to build your portfolio
 5. **Monitor Performance** - View your dashboard for portfolio analytics
-
-### Demo Features
-- **Demo Credentials** - Use username: `demo`, password: `password123` for testing
-- **Sample Data** - Popular stocks (AAPL, MSFT, GOOGL, etc.) have demo data available
-- **API Integration** - Real market data for comprehensive stock coverage
 
 ### Key Workflows
 - **Stock Research** → Search → Add to Watchlist → Analyze → Add Transaction
