@@ -65,7 +65,9 @@ const Dashboard = ({ user }) => {
       fetchDashboardData(); // Refresh data
       
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to add transaction');
+      const errorMsg = error.response?.data?.error || 'Failed to add transaction';
+      setError(errorMsg);
+      // Don't close the modal if there's an error so user can fix it
     } finally {
       setSubmitting(false);
     }

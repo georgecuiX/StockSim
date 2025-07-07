@@ -167,6 +167,26 @@ def get_current_user():
 def index():
     return jsonify({"message": "Stock Market Analysis API", "status": "running"})
 
+@app.route('/api/portfolio/clear-all', methods=['DELETE'])
+def clear_all_portfolio():
+    user = require_auth()
+    if not user:
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    try:
+        # Delete all transactions for the current user
+        transactions_deleted = Transaction.query.filter_by(user_id=user.id).delete()
+        db.session.commit()
+        
+        return jsonify({
+            'message': f'Portfolio cleared completely. {transactions_deleted} transactions deleted.',
+            'transactions_deleted': transactions_deleted
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 # Alpha Vantage API Client Class
 import requests
 import time
@@ -568,58 +588,6 @@ def get_portfolio():
         }), 200
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/portfolio/transaction', methods=['POST'])
-def add_transaction():
-    user = require_auth()
-    if not user:
-        return jsonify({'error': 'Authentication required'}), 401
-    
-    try:
-        data = request.get_json()
-        symbol = data.get('symbol', '').upper().strip()
-        transaction_type = data.get('type', '').lower()
-        quantity = data.get('quantity')
-        price = data.get('price')
-        date_str = data.get('date')  # ISO format string
-        
-        # Validation
-        if not all([symbol, transaction_type, quantity, price, date_str]):
-            return jsonify({'error': 'All fields required: symbol, type, quantity, price, date'}), 400
-        
-        if transaction_type not in ['buy', 'sell']:
-            return jsonify({'error': 'Transaction type must be "buy" or "sell"'}), 400
-        
-        if quantity <= 0 or price <= 0:
-            return jsonify({'error': 'Quantity and price must be positive numbers'}), 400
-        
-        # Parse date
-        try:
-            transaction_date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
-        except ValueError:
-            return jsonify({'error': 'Invalid date format. Use ISO format (YYYY-MM-DDTHH:MM:SS)'}), 400
-        
-        # Create transaction
-        transaction = Transaction(
-            user_id=user.id,
-            symbol=symbol,
-            type=transaction_type,
-            quantity=int(quantity),
-            price=float(price),
-            date=transaction_date
-        )
-        
-        db.session.add(transaction)
-        db.session.commit()
-        
-        return jsonify({
-            'message': 'Transaction added successfully',
-            'transaction': transaction.to_dict()
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
 # Create database tables

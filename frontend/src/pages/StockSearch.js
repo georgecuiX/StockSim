@@ -140,7 +140,9 @@ const StockSearch = () => {
       alert(`Transaction added successfully! ${transactionData.type.toUpperCase()} ${transactionData.quantity} shares of ${transactionData.symbol}`);
       
     } catch (error) {
-      alert(error.response?.data?.error || 'Failed to add transaction');
+      const errorMsg = error.response?.data?.error || 'Failed to add transaction';
+      alert(errorMsg);
+      // Don't close the modal if there's an error so user can fix it
     } finally {
       setSubmitting(false);
     }
