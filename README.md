@@ -180,7 +180,4 @@ npm start
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-  <p>Built with ❤️ for the financial and investment community</p>
-</div>
+This project is licensed under the MIT License
