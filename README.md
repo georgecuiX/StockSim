@@ -1,6 +1,4 @@
-<div align="center">
-  # 📈 StockSim - Stock Market Analysis & Portfolio Management Platform
-</div>
+# 📈 StockSim - Stock Market Analysis & Portfolio Management Platform
 
 <div align="center">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
