@@ -1,8 +1,51 @@
-# Python
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+.env.*.local
+
+# API keys and sensitive configuration
+config.local.*
+secrets.json
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Alpha Vantage API key file (if stored separately)
+api_keys.txt
+alpha_vantage_key.txt
+
+# Python cache and compiled files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.python-version
+Pipfile.lock
+
+# Flask specific
+instance/
+.webassets-cache
+*.db
+*.sqlite
+*.sqlite3
+
+# Python distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -22,62 +65,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual Environment
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-.venv/
-
-# Flask
-instance/
-.webassets-cache
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs
-*.log
-logs/
-
-# Node.js (for React frontend)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# React build
-frontend/build/
-frontend/dist/
-
-# Coverage reports
+# Testing and coverage
 htmlcov/
 .tox/
 .nox/
@@ -95,24 +83,241 @@ cover/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Production builds
+frontend/build/
+frontend/dist/
+build/
+dist/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output (if switching to Next.js)
+.next
+
+# Nuxt.js build output (if switching to Nuxt.js)
+.nuxt
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*
+.atom/
+
+# Visual Studio Code
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-snippets
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Logs
+logs/
+*.log
+lerna-debug.log*
+.npm-debug.log*
+.yarn-debug.log*
+.yarn-error.log*
 
 # Temporary files
 *.tmp
 *.temp
+.tmp/
+temp/
 
 # Deployment files
 .vercel/
 .netlify/
+.serverless/
 
-# Package manager locks (optional)
-# frontend/package-lock.json
-# frontend/yarn.lock
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
 
-# Backup files
+# Heroku
+.heroku/
+
+# Railway
+.railway/
+
+# AWS
+.aws/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+stock_analyzer.db
+
+# Database backups
 *.backup
 *.bak
+*.sql.gz
+*.dump
 
-# Local configuration
-config.local.*
+# CSV data files (if containing sensitive data)
+data/*.csv
+uploads/*.csv
+
+# Stock data cache
+stock_cache/
+market_data/
+*.json.cache
+
+# Financial reports and exported data
+reports/
+exports/
+portfolio_exports/
+*.xlsx
+*.xls
+
+# Chart images (if generated)
+charts/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+test-results/
+coverage/
+
+# CI/CD
+.github/workflows/*.yml.bak
+.gitlab-ci.yml.bak
+
+# Uncomment if you want to ignore lock files (not recommended for production)
+# package-lock.json
+# yarn.lock
+# Pipfile.lock
+
+# User uploads
+uploads/
+user_data/
+
+# Application logs
+app.log
+error.log
+access.log
+
+# Session files
+flask_session/
+sessions/
+
+# Custom configuration backups
+config.backup.*
+settings.backup.*
+
+# Local development database
+local.db
+dev.db
+test.db
+
+# Sphinx documentation
+docs/_build/
+docs/build/
+
+# MkDocs documentation
+site/
+
+# Security scan reports
+security-reports/
+vulnerability-scan.json
+audit-results.txt
+
+# Dependency vulnerability databases
+.snyk
+.audit-ci.json

@@ -38,7 +38,10 @@ const Watchlist = () => {
                 ...item.stock_data,
                 last_price: response.data.quote.price,
                 change: response.data.quote.change,
-                change_percent: response.data.quote.change_percent
+                change_percent: response.data.quote.change_percent,
+                volume: response.data.quote.volume,
+                previous_close: response.data.quote.previous_close,
+                latest_trading_day: response.data.quote.latest_trading_day
               }
             };
           } catch (error) {
@@ -88,29 +91,42 @@ const Watchlist = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6">
+    <div className="min-h-screen dashboard-bg p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-white">Watchlist</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-white">Watchlist</h1>
+            <p className="text-gray-400 mt-1">
+              {watchlist.length} stock{watchlist.length !== 1 ? 's' : ''} being tracked
+            </p>
+          </div>
           <div className="flex gap-3">
             <button
               onClick={refreshPrices}
               disabled={refreshing || watchlist.length === 0}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 ${
                 refreshing || watchlist.length === 0
                   ? 'bg-gray-600 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700'
               } text-white`}
             >
               {refreshing ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                   Refreshing...
-                </div>
+                </>
               ) : (
-                '🔄 Refresh Prices'
+                <>
+                  🔄 Refresh Prices
+                </>
               )}
+            </button>
+            <button
+              onClick={() => window.location.href = '/search'}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+            >
+              ➕ Add Stocks
             </button>
           </div>
         </div>
@@ -123,92 +139,86 @@ const Watchlist = () => {
 
         {/* Watchlist Content */}
         {watchlist.length > 0 ? (
-          <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-            {/* Table Header */}
-            <div className="bg-gray-700 px-6 py-4">
-              <div className="grid grid-cols-6 gap-4 text-gray-300 text-sm font-medium">
-                <div>Symbol</div>
-                <div>Name</div>
-                <div>Price</div>
-                <div>Change</div>
-                <div>% Change</div>
-                <div>Actions</div>
-              </div>
-            </div>
-
-            {/* Watchlist Items */}
-            <div className="divide-y divide-gray-700">
-              {watchlist.map((item) => (
-                <div key={item.symbol} className="px-6 py-4 hover:bg-gray-750 transition-colors duration-200">
-                  <div className="grid grid-cols-6 gap-4 items-center">
-                    {/* Symbol */}
-                    <div>
-                      <div className="font-semibold text-white text-lg">
-                        {item.symbol}
-                      </div>
-                      <div className="text-gray-400 text-xs">
-                        {item.stock_data?.sector || 'N/A'}
-                      </div>
-                    </div>
-
-                    {/* Name */}
-                    <div className="text-gray-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {watchlist.map((item) => (
+              <div
+                key={item.symbol}
+                className="bg-gray-800 rounded-lg border border-gray-700 p-6 transition-all duration-200"
+              >
+                {/* Stock Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-white transition-colors">
+                      {item.symbol}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
                       {item.stock_data?.name || 'Loading...'}
-                    </div>
+                    </p>
+                    {item.stock_data?.sector && (
+                      <span className="inline-block bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs mt-1">
+                        {item.stock_data.sector}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => removeFromWatchlist(item.symbol)}
+                    className="text-gray-400 hover:text-red-400 p-1 rounded hover:bg-gray-700 transition-colors"
+                    title="Remove from watchlist"
+                  >
+                    ✕
+                  </button>
+                </div>
 
-                    {/* Price */}
-                    <div className="font-semibold text-white">
+                {/* Price Information */}
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-2xl font-bold text-white">
                       {item.stock_data?.last_price 
                         ? formatCurrency(item.stock_data.last_price)
                         : 'N/A'
                       }
                     </div>
+                  </div>
 
-                    {/* Change */}
-                    <div className={`font-medium ${
-                      (item.stock_data?.change || 0) >= 0 ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {item.stock_data?.change 
-                        ? formatCurrency(item.stock_data.change)
-                        : 'N/A'
-                      }
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className={`text-lg font-semibold ${
+                        (item.stock_data?.change || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                      }`}>
+                        {item.stock_data?.change 
+                          ? formatCurrency(item.stock_data.change)
+                          : 'N/A'
+                        }
+                      </div>
+                      <div className="text-gray-400 text-sm">Daily Change</div>
                     </div>
-
-                    {/* % Change */}
-                    <div className={`font-medium ${
-                      (item.stock_data?.change_percent || 0) >= 0 ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {item.stock_data?.change_percent 
-                        ? formatPercent(item.stock_data.change_percent)
-                        : 'N/A'
-                      }
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => removeFromWatchlist(item.symbol)}
-                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors duration-200"
-                      >
-                        Remove
-                      </button>
+                    <div className="text-right">
+                      <div className={`text-lg font-semibold ${
+                        (item.stock_data?.change_percent || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                      }`}>
+                        {item.stock_data?.change_percent 
+                          ? formatPercent(item.stock_data.change_percent)
+                          : 'N/A'
+                        }
+                      </div>
+                      <div className="text-gray-400 text-sm">% Change</div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         ) : (
           /* Empty State */
-          <div className="bg-gray-800 rounded-lg p-8 border border-gray-700 text-center">
-            <div className="text-6xl mb-4">⭐</div>
-            <h2 className="text-xl font-bold text-white mb-2">Your watchlist is empty</h2>
-            <p className="text-gray-400 mb-6">
-              Search for stocks and add them to your watchlist to track their performance.
+          <div className="bg-gray-800 rounded-lg p-12 border border-gray-700 text-center">
+            <div className="text-6xl mb-6">⭐</div>
+            <h2 className="text-2xl font-bold text-white mb-3">Your watchlist is empty</h2>
+            <p className="text-gray-400 mb-8 max-w-md mx-auto">
+              Start tracking your favorite stocks by searching for companies and adding them to your watchlist.
             </p>
             <button
               onClick={() => window.location.href = '/search'}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 inline-flex items-center gap-2"
             >
               🔍 Search for Stocks
             </button>

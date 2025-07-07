@@ -93,7 +93,7 @@ const Dashboard = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6">
+    <div className="min-h-screen dashboard-bg p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">

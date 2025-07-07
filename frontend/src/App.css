@@ -10,6 +10,166 @@ body {
   color: #f9fafb;
 }
 
+/* ==============================================================================
+   UNIQUE PAGE BACKGROUNDS
+   ============================================================================== */
+
+/* Dashboard - Deep blue gradient with subtle pattern */
+.dashboard-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.dashboard-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Search - Green gradient with tech pattern */
+.search-bg {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.search-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(5, 150, 105, 0.15) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 40%, rgba(6, 78, 59, 0.1) 50%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Portfolio - Purple gradient with financial pattern */
+.portfolio-bg {
+  background: linear-gradient(135deg, #581c87 0%, #7c3aed 50%, #a855f7 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.portfolio-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(139, 69, 19, 0.1) 100px, rgba(139, 69, 19, 0.1) 102px),
+    radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Watchlist - Amber/Orange gradient with star pattern */
+.watchlist-bg {
+  background: linear-gradient(135deg, #92400e 0%, #d97706 50%, #f59e0b 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.watchlist-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(251, 191, 36, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Login/Register - Deep teal gradient */
+.auth-bg {
+  background: linear-gradient(135deg, #134e4a 0%, #0f766e 50%, #0d9488 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.auth-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 75%, rgba(20, 184, 166, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 75% 25%, rgba(13, 148, 136, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Fallback background for any page without specific background */
+.default-bg {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #374151 100%);
+  background-attachment: fixed;
+}
+
+/* ==============================================================================
+   ENHANCED CARD BACKGROUNDS FOR DIFFERENT PAGES
+   ============================================================================== */
+
+/* Dashboard cards - slightly transparent to show background */
+.dashboard-bg .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Search cards */
+.search-bg .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Portfolio cards */
+.portfolio-bg .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+/* Watchlist cards */
+.watchlist-bg .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Auth cards */
+.auth-bg .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+/* ==============================================================================
+   EXISTING UTILITY CLASSES (keeping all your current styles)
+   ============================================================================== */
+
 /* Layout Classes */
 .min-h-screen { min-height: 100vh; }
 .max-w-md { max-width: 28rem; }
