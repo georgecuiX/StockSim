@@ -52,12 +52,6 @@ Whether you're a beginner learning about investing or an experienced trader look
 - **Quick Actions** - Fast access to search, add transactions, and manage investments
 - **Visual Analytics** - Color-coded gains/losses and performance indicators
 
-### 🎨 Modern User Experience
-- **Responsive Design** - Optimized for desktop, tablet, and mobile devices
-- **Dark Theme** - Professional dark interface optimized for financial data
-- **Intuitive Navigation** - Clean, organized layout with logical information hierarchy
-- **Real-Time Updates** - Live data refreshing and price updates
-
 ## 🏗️ Tech Stack
 
 ### Frontend
@@ -133,22 +127,14 @@ cd frontend
 npm install
 ```
 
-**4. Environment Configuration**
-Create a `.env` file in the backend directory:
-```env
-SECRET_KEY=your-secret-key-here
-ALPHA_VANTAGE_API_KEY=your-alpha-vantage-api-key
-FLASK_ENV=development
-```
-
-**5. Database Initialization**
+**4. Database Initialization**
 ```bash
 # The database will be automatically created when you first run the backend
 cd backend
 python app.py
 ```
 
-**6. Start the Application**
+**5. Start the Application**
 
 **Backend Server** (Terminal 1):
 ```bash
