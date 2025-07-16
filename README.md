@@ -55,20 +55,19 @@ Whether you're a beginner learning about investing or an experienced trader look
 ## 🏗️ Tech Stack
 
 ### Frontend
-- **React 19.1** - Modern UI library with hooks and functional components
-- **React Router DOM 7.6** - Client-side routing and navigation
-- **Axios 1.9** - HTTP client for API communication
-- **Chart.js 4.4** - Data visualization and charting capabilities
-- **React-ChartJS-2 5.3** - React wrapper for Chart.js integration
+- **React** - Modern UI library with hooks and functional components
+- **React Router DOM** - Client-side routing and navigation
+- **Axios** - HTTP client for API communication
+- **Chart.js** - Data visualization and charting capabilities
 - **Custom CSS** - Tailwind-inspired utility classes for consistent styling
 
 ### Backend
-- **Flask 2.3** - Lightweight Python web framework
-- **Flask-SQLAlchemy 3.0** - Database ORM for data management
-- **Flask-CORS 4.0** - Cross-origin resource sharing support
-- **Werkzeug 2.3** - Password hashing and security utilities
-- **Requests 2.31** - HTTP library for external API calls
-- **Python-dotenv 1.0** - Environment variable management
+- **Flask** - Lightweight Python web framework
+- **Flask-SQLAlchemy** - Database ORM for data management
+- **Flask-CORS** - Cross-origin resource sharing support
+- **Werkzeug** - Password hashing and security utilities
+- **Requests** - HTTP library for external API calls
+- **Python-dotenv** - Environment variable management
 
 ### External APIs
 - **Alpha Vantage API** - Real-time and historical stock market data
