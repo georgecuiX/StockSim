@@ -13,7 +13,7 @@
   <p><em>A comprehensive full-stack platform for real-time stock analysis, portfolio tracking, and investment simulation</em></p>
 </div>
 
-https://github.com/user-attachments/assets/864baa5b-1d97-43e7-89a0-49367c6927b9
+https://github.com/user-attachments/assets/c06d83a9-a65f-47a3-a24e-27c596b8e247
 
 ## 🌟 Overview
 
