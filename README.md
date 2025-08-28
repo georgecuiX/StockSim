@@ -98,13 +98,8 @@ venv\Scripts\activate
 # On macOS/Linux:
 source venv/bin/activate
 
-# Install Python dependencies
+# Install dependencies
 pip install -r requirements.txt
-
-# Create environment file
-cp .env.example .env
-# Add your Alpha Vantage API key to .env file
-```
 
 **3. Frontend Setup**
 ```bash
@@ -128,14 +123,12 @@ python app.py
 ```bash
 cd backend
 python app.py
-# Server will start on http://localhost:5000
 ```
 
 **Frontend Application** (Terminal 2):
 ```bash
 cd frontend
 npm start
-# Application will open at http://localhost:3000
 ```
 
 ## 🚀 Usage Guide
