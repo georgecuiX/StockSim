@@ -13,6 +13,8 @@
   <p><em>A comprehensive full-stack platform for real-time stock analysis, portfolio tracking, and investment simulation</em></p>
 </div>
 
+https://github.com/user-attachments/assets/864baa5b-1d97-43e7-89a0-49367c6927b9
+
 ## 🌟 Overview
 
 StockSim is a powerful financial platform that combines real-time stock market data, sophisticated portfolio management, and paper trading simulation capabilities. Built with modern web technologies, it provides investors, traders, and financial enthusiasts with professional-grade tools to analyze markets, track investments, and make informed financial decisions.
