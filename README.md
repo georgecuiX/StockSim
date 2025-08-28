@@ -13,6 +13,8 @@
   <p><em>A comprehensive full-stack platform for real-time stock analysis, portfolio tracking, and investment simulation</em></p>
 </div>
 
+https://github.com/user-attachments/assets/864baa5b-1d97-43e7-89a0-49367c6927b9
+
 ## 🌟 Overview
 
 StockSim is a powerful financial platform that combines real-time stock market data, sophisticated portfolio management, and paper trading simulation capabilities. Built with modern web technologies, it provides investors, traders, and financial enthusiasts with professional-grade tools to analyze markets, track investments, and make informed financial decisions.
@@ -46,46 +48,26 @@ Whether you're a beginner learning about investing or an experienced trader look
 - **Price Alerts** - Visual indicators for price movements and daily changes
 - **Sector Organization** - Categorized view of watchlisted stocks by industry
 
-### 📈 Interactive Dashboard
-- **Portfolio Summary** - High-level overview of total portfolio value and performance
-- **Recent Activity** - Latest transactions and portfolio changes
-- **Quick Actions** - Fast access to search, add transactions, and manage investments
-- **Visual Analytics** - Color-coded gains/losses and performance indicators
-
-### 🎨 Modern User Experience
-- **Responsive Design** - Optimized for desktop, tablet, and mobile devices
-- **Dark Theme** - Professional dark interface optimized for financial data
-- **Intuitive Navigation** - Clean, organized layout with logical information hierarchy
-- **Real-Time Updates** - Live data refreshing and price updates
-
 ## 🏗️ Tech Stack
 
 ### Frontend
-- **React 19.1** - Modern UI library with hooks and functional components
-- **React Router DOM 7.6** - Client-side routing and navigation
-- **Axios 1.9** - HTTP client for API communication
-- **Chart.js 4.4** - Data visualization and charting capabilities
-- **React-ChartJS-2 5.3** - React wrapper for Chart.js integration
+- **React** - Modern UI library with hooks and functional components
+- **React Router DOM** - Client-side routing and navigation
+- **Axios** - HTTP client for API communication
+- **Chart.js** - Data visualization and charting capabilities
 - **Custom CSS** - Tailwind-inspired utility classes for consistent styling
 
 ### Backend
-- **Flask 2.3** - Lightweight Python web framework
-- **Flask-SQLAlchemy 3.0** - Database ORM for data management
-- **Flask-CORS 4.0** - Cross-origin resource sharing support
-- **Werkzeug 2.3** - Password hashing and security utilities
-- **Requests 2.31** - HTTP library for external API calls
-- **Python-dotenv 1.0** - Environment variable management
+- **Flask** - Lightweight Python web framework
+- **Flask-SQLAlchemy** - Database ORM for data management
+- **Flask-CORS** - Cross-origin resource sharing support
+- **Werkzeug** - Password hashing and security utilities
+- **Requests** - HTTP library for external API calls
+- **Python-dotenv** - Environment variable management
 
 ### External APIs
 - **Alpha Vantage API** - Real-time and historical stock market data
 - **Demo Data System** - Fallback data for popular stocks when API limits are reached
-
-### Database Schema
-The application uses SQLite with the following core tables:
-- **users** - User authentication and profile information
-- **stocks** - Stock information cache and company data
-- **transactions** - Buy/sell transaction records with timestamps
-- **watchlist** - User's tracked stocks and monitoring preferences
 
 ## 🛠️ Installation & Setup
 
@@ -116,12 +98,8 @@ venv\Scripts\activate
 # On macOS/Linux:
 source venv/bin/activate
 
-# Install Python dependencies
+# Install dependencies
 pip install -r requirements.txt
-
-# Create environment file
-cp .env.example .env
-# Add your Alpha Vantage API key to .env file
 ```
 
 **3. Frontend Setup**
@@ -133,35 +111,25 @@ cd frontend
 npm install
 ```
 
-**4. Environment Configuration**
-Create a `.env` file in the backend directory:
-```env
-SECRET_KEY=your-secret-key-here
-ALPHA_VANTAGE_API_KEY=your-alpha-vantage-api-key
-FLASK_ENV=development
-```
-
-**5. Database Initialization**
+**4. Database Initialization**
 ```bash
 # The database will be automatically created when you first run the backend
 cd backend
 python app.py
 ```
 
-**6. Start the Application**
+**5. Start the Application**
 
 **Backend Server** (Terminal 1):
 ```bash
 cd backend
 python app.py
-# Server will start on http://localhost:5000
 ```
 
 **Frontend Application** (Terminal 2):
 ```bash
 cd frontend
 npm start
-# Application will open at http://localhost:3000
 ```
 
 ## 🚀 Usage Guide
@@ -172,11 +140,6 @@ npm start
 3. **Add to Watchlist** - Track interesting stocks for monitoring
 4. **Record Transactions** - Add buy/sell transactions to build your portfolio
 5. **Monitor Performance** - View your dashboard for portfolio analytics
-
-### Key Workflows
-- **Stock Research** → Search → Add to Watchlist → Analyze → Add Transaction
-- **Portfolio Management** → View Dashboard → Add Transactions → Monitor Performance
-- **Market Monitoring** → Manage Watchlist → Refresh Prices → Track Changes
 
 ## 📄 License
 
