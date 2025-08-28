@@ -46,12 +46,6 @@ Whether you're a beginner learning about investing or an experienced trader look
 - **Price Alerts** - Visual indicators for price movements and daily changes
 - **Sector Organization** - Categorized view of watchlisted stocks by industry
 
-### 📈 Interactive Dashboard
-- **Portfolio Summary** - High-level overview of total portfolio value and performance
-- **Recent Activity** - Latest transactions and portfolio changes
-- **Quick Actions** - Fast access to search, add transactions, and manage investments
-- **Visual Analytics** - Color-coded gains/losses and performance indicators
-
 ## 🏗️ Tech Stack
 
 ### Frontend
@@ -72,13 +66,6 @@ Whether you're a beginner learning about investing or an experienced trader look
 ### External APIs
 - **Alpha Vantage API** - Real-time and historical stock market data
 - **Demo Data System** - Fallback data for popular stocks when API limits are reached
-
-### Database Schema
-The application uses SQLite with the following core tables:
-- **users** - User authentication and profile information
-- **stocks** - Stock information cache and company data
-- **transactions** - Buy/sell transaction records with timestamps
-- **watchlist** - User's tracked stocks and monitoring preferences
 
 ## 🛠️ Installation & Setup
 
@@ -157,11 +144,6 @@ npm start
 3. **Add to Watchlist** - Track interesting stocks for monitoring
 4. **Record Transactions** - Add buy/sell transactions to build your portfolio
 5. **Monitor Performance** - View your dashboard for portfolio analytics
-
-### Key Workflows
-- **Stock Research** → Search → Add to Watchlist → Analyze → Add Transaction
-- **Portfolio Management** → View Dashboard → Add Transactions → Monitor Performance
-- **Market Monitoring** → Manage Watchlist → Refresh Prices → Track Changes
 
 ## 📄 License
 
