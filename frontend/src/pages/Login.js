@@ -114,14 +114,6 @@ const Login = ({ onLogin }) => {
               )}
             </button>
           </div>
-
-          <div className="text-center">
-            <p className="text-gray-400 text-sm">
-              Demo credentials for testing:<br />
-              Username: <span className="text-white font-mono">demo</span><br />
-              Password: <span className="text-white font-mono">password123</span>
-            </p>
-          </div>
         </form>
       </div>
     </div>
